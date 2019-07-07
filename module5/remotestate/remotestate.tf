@@ -6,15 +6,15 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
 variable "aws_networking_bucket" {
-  default = "ddt-networking"
+  default = "qpay-networking"
 }
 
 variable "aws_application_bucket" {
-  default = "ddt-application"
+  default = "qpay-application"
 }
 
 variable "aws_dynamodb_table" {
-  default = "ddt-tfstatelock"
+  default = "qpay-tfstatelock"
 }
 
 ##################################################################################
@@ -24,7 +24,7 @@ variable "aws_dynamodb_table" {
 provider "aws" {
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
-  region     = "us-west-2"
+  region     = "us-east-1"
 }
 
 ##################################################################################
@@ -82,7 +82,7 @@ resource "aws_dynamodb_table" "terraform_statelock" {
   }
 }
 
-resource "aws_s3_bucket" "ddtnet" {
+resource "aws_s3_bucket" "qpaynet" {
   bucket        = "${var.aws_networking_bucket}"
   acl           = "private"
   force_destroy = true
@@ -94,7 +94,7 @@ resource "aws_s3_bucket" "ddtnet" {
   policy = "${data.template_file.network_bucket_policy.rendered}"
 }
 
-resource "aws_s3_bucket" "ddtapp" {
+resource "aws_s3_bucket" "qpayapp" {
   bucket        = "${var.aws_application_bucket}"
   acl           = "private"
   force_destroy = true

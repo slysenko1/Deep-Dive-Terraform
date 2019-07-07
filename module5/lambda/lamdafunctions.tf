@@ -6,7 +6,7 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
 variable "aws_dynamodb_table" {
-  default = "ddt-datasource"
+  default = "qpay-datasource"
 }
 
 variable "accountId" {}
@@ -18,7 +18,7 @@ variable "accountId" {}
 provider "aws" {
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
-  region     = "us-west-2"
+  region     = "us-east-1"
 }
 
 data "aws_iam_group" "ec2admin" {
@@ -143,7 +143,7 @@ resource "aws_lambda_permission" "apigw_lambda" {
   source_arn = "arn:aws:execute-api:${data.aws_region.current.name}:${var.accountId}:${aws_api_gateway_rest_api.tddapi.id}/*/${aws_api_gateway_method.tddget.http_method}${aws_api_gateway_resource.tddresource.path}"
 }
 
-resource "aws_api_gateway_deployment" "ddtdeployment" {
+resource "aws_api_gateway_deployment" "qpaydeployment" {
   depends_on = ["aws_api_gateway_integration.integration"]
 
   rest_api_id = "${aws_api_gateway_rest_api.tddapi.id}"
@@ -152,5 +152,5 @@ resource "aws_api_gateway_deployment" "ddtdeployment" {
 }
 
 output "invoke-url" {
-    value = "https://${aws_api_gateway_deployment.ddtdeployment.rest_api_id}.execute-api.${data.aws_region.current.name}.amazonaws.com/${aws_api_gateway_deployment.ddtdeployment.stage_name}/${aws_lambda_function.data_source_ddb.function_name}"
+    value = "https://${aws_api_gateway_deployment.qpaydeployment.rest_api_id}.execute-api.${data.aws_region.current.name}.amazonaws.com/${aws_api_gateway_deployment.qpaydeployment.stage_name}/${aws_lambda_function.data_source_ddb.function_name}"
 }

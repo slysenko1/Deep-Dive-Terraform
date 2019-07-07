@@ -32,9 +32,6 @@ module "vpc" {
 
   create_database_subnet_group = false
 
-  
-  tags {
-  }
 }
 
 
